@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro</title>
+    <link href="/tailwind.css" rel="stylesheet">
+    <style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        .fade-in {
+            animation: fadeIn 1s ease-in-out;
+        }
+    </style>
+</head>
+<body bgcolor="black" class="text-white flex items-center justify-center min-h-screen">
+    <div class="fade-in bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-md">
+        <h2 class="text-3xl font-bold mb-6 text-center text-red-700">Registro</h2>
+        <form id="register-form" action="/register" method="POST" enctype="multipart/form-data" class="space-y-4">
+            <div>
+                <label for="full_name" class="block text-sm font-medium text-gray-300">Nome Completo:</label>
+                <input type="text" name="full_name" id="full_name" required class="w-full p-2 mt-1 bg-gray-700 border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-red-700">
+            </div>
+            <div>
+                <label for="username" class="block text-sm font-medium text-gray-300">Nome de Usuário:</label>
+                <input type="text" name="username" id="username" required class="w-full p-2 mt-1 bg-gray-700 border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-red-700">
+            </div>
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-300">Senha:</label>
+                <input type="password" name="password" id="password" required class="w-full p-2 mt-1 bg-gray-700 border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-red-700">
+            </div>
+            <div>
+                <label for="phone_number" class="block text-sm font-medium text-gray-300">Número de Telefone:</label>
+                <input type="text" id="telefone" name="phone_number" placeholder="(00) 00000-0000" maxlength="15" required class="w-full p-2 mt-1 bg-gray-700 border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-red-700">
+            </div>
+            <div>
+                <label for="profile_pic" class="block text-sm font-medium text-gray-300">Foto de Perfil:</label>
+                <input type="file" name="profile_pic" id="profile_pic" accept="image/*" class="w-full p-2 mt-1 bg-gray-700 border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-red-700">
+            </div>
+            <div>
+                <label for="gender" class="block text-sm font-medium text-gray-300">Sexo:</label>
+                <select name="gender" id="gender" required class="w-full p-2 mt-1 bg-gray-700 border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-red-700">
+                    <option value="">Selecione o Sexo</option>
+                    <option value="male">Masculino</option>
+                    <option value="female">Feminino</option>
+                </select>
+            </div>
+            <div class="anonymous-preview text-sm text-gray-400" id="anonymous-preview"></div>
+            <button type="submit" class="w-full py-2 bg-red-700 hover:bg-red-800 rounded text-white font-bold transition duration-200">Registrar</button>
+        </form>
+        <div class="mt-4 text-center">
+            <a href="/login" class="text-sm text-gray-400 hover:text-red-700 transition duration-200">Já tem uma conta? Faça login</a>
+        </div>
+    </div>
+    <script>
+        document.getElementById('telefone').addEventListener('input', function (event) {
+            let input = event.target;
+            let value = input.value.replace(/\D/g, ''); // Remove tudo o que não for número
+
+            // Aplica a máscara (formato (00) 00000-0000)
+            if (value.length <= 2) {
+                input.value = `(${value}`;
+            } else if (value.length <= 7) {
+                input.value = `(${value.slice(0, 2)}) ${value.slice(2)}`;
+            } else if (value.length <= 11) {
+                input.value = `(${value.slice(0, 2)}) ${value.slice(2, 7)}-${value.slice(7)}`;
+            } else {
+                input.value = `(${value.slice(0, 2)}) ${value.slice(2, 7)}-${value.slice(7, 11)}`;
+            }
+        });
+
+        document.getElementById('gender').addEventListener('change', async function() {
+            const gender = this.value;
+            if (gender) {
+                const response = await fetch('/generate-anonymous-username?gender=' + gender);
+                const data = await response.json();
+                document.getElementById('anonymous-preview').innerText = 'Seu nome de usuário anônimo será: ' + data.anonymous_username;
+            } else {
+                document.getElementById('anonymous-preview').innerText = '';
+            }
+        });
+    </script>
+</body>
+</html>

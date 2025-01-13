@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="/tailwind.css" rel="stylesheet">
+    <style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        .fade-in {
+            animation: fadeIn 1s ease-in-out;
+        }
+    </style>
+</head>
+<body bgcolor="black" class="text-white flex items-center justify-center min-h-screen">
+    <div style="background-color: #0f0f0f;" class="fade-in p-8 rounded-lg shadow-lg w-full max-w-md">
+        <h2 class="text-3xl font-bold mb-6 text-center text-red-700">Login</h2>
+        <form action="/login" method="POST" class="space-y-4">
+            <div>
+                <label for="username" class="block text-sm font-medium text-gray-300">Usuário:</label>
+                <input type="text" name="username" id="username" required class="w-full p-2 mt-1 bg-gray-700 border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-red-700">
+            </div>
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-300">Senha:</label>
+                <input type="password" name="password" id="password" required class="w-full p-2 mt-1 bg-gray-700 border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-red-700">
+            </div>
+            <button type="submit" style="background-color: #4B0082;" class="w-full py-2 rounded text-white font-bold transition duration-200">Entrar</button>
+        </form>
+        <div class="mt-4 text-center">
+            <a href="/register" class="text-sm text-gray-400 hover:text-red-700 transition duration-200">Criar Conta</a>
+        </div>
+    </div>
+</body>
+</html>
